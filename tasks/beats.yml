@@ -4,17 +4,21 @@
 - name: Include specific Beats
   include: beats-debian.yml
   when: ansible_os_family == 'Debian'
+  tags: beats-install
 
 - name: Include specific Beats
   include: beats-redhat.yml
   when: ansible_os_family == 'RedHat'
+  tags: beats-install
 
 #Configuration file for beats
 - name: Beats configuration
   include: beats-config.yml
+  tags: beats-config
 
 # Make sure the service is started, and restart if necessary
 - name: Start {{ beat }} service
   service: name={{ beat }} state=started enabled=yes
   when: start_service
   register: beats_started
+  tags: beats-restart
